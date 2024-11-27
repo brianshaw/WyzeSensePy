@@ -34,7 +34,7 @@ def on_event(ws, e):
         print(f'e.Data {e.Data}')
         if e.Data[1] == 'active':
             print(f'Active')
-            Sound.play_random_sound()
+            Sound.play_random_sound('mpg321')
     else:
         s += "RawEvent: type=%s, data=%r" % (e.Type, e.Data)
     print(s)
