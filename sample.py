@@ -32,7 +32,7 @@ def on_event(ws, e):
     if e.Type == 'state':
         s += "StateEvent: sensor_type=%s, state=%s, battery=%d, signal=%d" % e.Data
         print(f'e.Data {e.Data}')
-        if e.Data[1] == 'active':
+        if e.Data[0] == 'motion' and e.Data[1] == 'active':
             print(f'Active')
             Sound.play_random_sound('mpg321')
     else:
