@@ -22,7 +22,7 @@ sounds = {str(index): file for index, file in enumerate(os.listdir(soundpath)) i
 print(f'sounds {sounds}')
 
 def play_random_sound(app='afplay'):
-  key = random.choice(list(sounds.keys()))
+  key = random.choice(list(sounds.values()))
   asyncio.run(playsound(key, app=app))
 
 def playbackgroundsound(key, app='afplay', vol=50):
