@@ -6,3 +6,6 @@ sudo chmod 666 /dev/hidraw0
 
 python3 -m venv venv
 source venv/bin/activate
+
+pip install docopt
+
