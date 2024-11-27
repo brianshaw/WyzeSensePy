@@ -18,7 +18,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 soundpath = dir_path + '/sounds/'
 print(f'soundpath {soundpath}')
 # Dictionary of sounds
-sounds = {str(index): file.replace("'", "\\'") for index, file in enumerate(os.listdir(soundpath)) if file.endswith('.mp3')}
+sounds = {str(index): file.replace("'", "\\'").replace(" ", "\\ ") for index, file in enumerate(os.listdir(soundpath)) if file.endswith('.mp3')}
 # print(f'sounds {sounds}')
 
 def play_random_sound(app='afplay'):
