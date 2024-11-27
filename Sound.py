@@ -88,6 +88,7 @@ async def playsound(key, app='afplay'):
         killbackgroundsound(process=proRain)
     # Build the command
     command = f'{app} {soundpath}{sounds[key]}'
+    print(f'command {command}')
     # Create an asynchronous subprocess
     process = await asyncio.create_subprocess_shell(command)
     # Wait for the process to finish
