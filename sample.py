@@ -25,7 +25,7 @@ import sys
 import logging
 import binascii
 import wyzesense
-
+import Sound
 
 def on_event(ws, e):
     s = "[%s][%s]" % (e.Timestamp.strftime("%Y-%m-%d %H:%M:%S"), e.MAC)
@@ -34,6 +34,7 @@ def on_event(ws, e):
         print(f'e.Data {e.Data}')
         if e.Data[1] == 'active':
             print(f'Active')
+            Sound.play_random_sound()
     else:
         s += "RawEvent: type=%s, data=%r" % (e.Type, e.Data)
     print(s)
