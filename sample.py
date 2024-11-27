@@ -31,6 +31,8 @@ def on_event(ws, e):
     s = "[%s][%s]" % (e.Timestamp.strftime("%Y-%m-%d %H:%M:%S"), e.MAC)
     if e.Type == 'state':
         s += "StateEvent: sensor_type=%s, state=%s, battery=%d, signal=%d" % e.Data
+        if e.Data[1] == 'active':
+            print('activated')
     else:
         s += "RawEvent: type=%s, data=%r" % (e.Type, e.Data)
     print(s)
