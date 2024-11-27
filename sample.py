@@ -32,6 +32,8 @@ def on_event(ws, e):
     if e.Type == 'state':
         s += "StateEvent: sensor_type=%s, state=%s, battery=%d, signal=%d" % e.Data
         print(f'e.Data {e.Data}')
+        if e.Data[1] == 'active':
+            print(f'Active')
     else:
         s += "RawEvent: type=%s, data=%r" % (e.Type, e.Data)
     print(s)
