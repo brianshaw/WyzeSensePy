@@ -19,6 +19,7 @@ soundpath = dir_path + '/sounds/'
 print(f'soundpath {soundpath}')
 # Dictionary of sounds
 sounds = {str(index): file for index, file in enumerate(os.listdir(soundpath)) if file.endswith('.mp3')}
+print(f'sounds {sounds}')
 
 def play_random_sound(app='afplay'):
   key = random.choice(list(sounds.keys()))
