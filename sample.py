@@ -12,6 +12,8 @@
     --device PATH   USB device path [default: /dev/hidraw0]
     -s, --service   run as service,
     -r, --rpi       run on raspberry pi
+    --soundclips=<soundclips>  Sound clips toplay [default: 3] 
+    --soundtime=<soundtime>  Time between sound clips [default: 5]
 
 **Examples:** ::
 
@@ -32,6 +34,8 @@ import asyncio
 
 rpiButtonsLeds = None
 runningsounds = False
+soundclips = 3
+soundtime = 5
 
 def resetSoundAndLed():
     global rpiButtonsLeds
@@ -47,7 +51,7 @@ def on_event(ws, e):
             print(f'Active')
             logging.debug("Active")
             if rpiButtonsLeds: rpiButtonsLeds.ledOff()
-            asyncio.run(Sound.play_random_sounds(3, 5, 'mpg321', resetSoundAndLed))
+            asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
                 # if rpiButtonsLeds: rpiButtonsLeds.ledOn()
                 # runningsounds = False
                 # Sound.play_random_sound('mpg321')
@@ -76,6 +80,13 @@ def main(args):
       from rpi_buttons_leds import RpiButtonsLeds
       rpiButtonsLeds = RpiButtonsLeds()
       rpiButtonsLeds.ledOn()
+
+    global soundclips
+    if args['--soundclips']:
+        soundclips = int(args['--soundclips'])
+    global soundtime
+    if args['--soundtime']:
+        soundtime = int(args['--soundtime'])
     try:
         ws = wyzesense.Open(device, on_event)
         if not ws:
@@ -154,6 +165,7 @@ def main(args):
                 pass
     finally:
         ws.Stop()
+        if rpiButtonsLeds: rpiButtonsLeds.ledOff()
 
     return 0
 
