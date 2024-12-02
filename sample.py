@@ -62,7 +62,7 @@ def main(args):
         print("Service mode")
         logging.debug("Service mode")
     
-    if args['rpi']:
+    if args['--rpi']:
       print("Running on Raspberry Pi")
       logging.debug("Running on Raspberry Pi")
       from rpi_buttons_leds import RpiButtonsLeds
