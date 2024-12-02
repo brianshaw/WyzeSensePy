@@ -10,7 +10,8 @@
     -d, --debug     output debug log messages to stderr
     -v, --verbose   print and log more information
     --device PATH   USB device path [default: /dev/hidraw0]
-    -s, --service   run as service
+    -s, --service   run as service,
+    -r, --rpi       run on raspberry pi
 
 **Examples:** ::
 
@@ -29,6 +30,8 @@ import wyzesense
 import Sound
 import asyncio
 
+rpiButtonsLeds = None
+
 def on_event(ws, e):
     s = "[%s][%s]" % (e.Timestamp.strftime("%Y-%m-%d %H:%M:%S"), e.MAC)
     if e.Type == 'state':
@@ -36,7 +39,9 @@ def on_event(ws, e):
         print(f'e.Data {e.Data}')
         if e.Data[0] == 'motion' and e.Data[1] == 'active':
             print(f'Active')
+            if rpiButtonsLeds: rpiButtonsLeds.ledOff()
             asyncio.run(Sound.play_random_sounds(3, 3, 'mpg321'))
+            if rpiButtonsLeds: rpiButtonsLeds.ledOn()
             # Sound.play_random_sound('mpg321')
     else:
         s += "RawEvent: type=%s, data=%r" % (e.Type, e.Data)
@@ -56,6 +61,12 @@ def main(args):
     if is_service:
         print("Service mode")
         logging.debug("Service mode")
+    
+    if args['rpi']:
+      print("Running on Raspberry Pi")
+      logging.debug("Running on Raspberry Pi")
+      from rpi_buttons_leds import RpiButtonsLeds
+      rpiButtonsLeds = RpiButtonsLeds()
     try:
         ws = wyzesense.Open(device, on_event)
         if not ws:
