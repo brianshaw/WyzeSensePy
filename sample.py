@@ -10,6 +10,7 @@
     -d, --debug     output debug log messages to stderr
     -v, --verbose   print and log more information
     --device PATH   USB device path [default: /dev/hidraw0]
+    -s, --service   run as service
 
 **Examples:** ::
 
