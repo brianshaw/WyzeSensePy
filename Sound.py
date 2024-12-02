@@ -4,6 +4,7 @@ import signal
 import subprocess
 import threading
 import random
+import time
 
 
 # The os.setsid() is passed in the argument preexec_fn so
@@ -24,6 +25,13 @@ sounds = {str(index): file.replace("'", "\\'").replace(" ", "\\ ") for index, fi
 def play_random_sound(app='afplay'):
   key = random.choice(list(sounds.keys()))
   asyncio.run(playsound(key, app=app))
+
+async def play_random_sounds(number_of_sounds=3, sleep_time=3, app='afplay'):
+  for _ in range(number_of_sounds):
+    key = random.choice(list(sounds.keys()))
+    await playsound(key, app=app)
+    time.sleep(sleep_time)
+
 
 def playbackgroundsound(key, app='afplay', vol=50):
     global pro, proRain, proAmbient

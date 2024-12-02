@@ -27,6 +27,7 @@ import logging
 import binascii
 import wyzesense
 import Sound
+import asyncio
 
 def on_event(ws, e):
     s = "[%s][%s]" % (e.Timestamp.strftime("%Y-%m-%d %H:%M:%S"), e.MAC)
@@ -35,7 +36,8 @@ def on_event(ws, e):
         print(f'e.Data {e.Data}')
         if e.Data[0] == 'motion' and e.Data[1] == 'active':
             print(f'Active')
-            Sound.play_random_sound('mpg321')
+            asyncio.run(Sound.play_random_sounds(3, 3, 'mpg321'))
+            # Sound.play_random_sound('mpg321')
     else:
         s += "RawEvent: type=%s, data=%r" % (e.Type, e.Data)
     print(s)
