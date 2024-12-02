@@ -13,6 +13,7 @@ import time
 pro = None
 proRain = None
 proAmbient = None
+runningsounds = False
 
 # Define the directory path
 dir_path = os.path.dirname(os.path.realpath(__file__))
