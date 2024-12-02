@@ -3,7 +3,7 @@ import time
 import asyncio
 
 class RpiButtonsLeds:
-    LED_PIN = 4
+    LED_PIN = 7 # in setmode(GPIO.BOARD) this is pin 7 on the board, using BCM would be referencing the gpio name
     BUTTON_PIN = 10
     t0 = -1
     t1 = -1
