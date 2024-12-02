@@ -48,6 +48,11 @@ def main(args):
 
     device = args['--device']
     print("Openning wyzesense gateway [%r]" % device)
+
+    is_service = args['--service']
+    if is_service:
+        print("Service mode")
+        logging.debug("Service mode")
     try:
         ws = wyzesense.Open(device, on_event)
         if not ws:
@@ -118,8 +123,12 @@ def main(args):
         return True
 
     try:
-        while HandleCmd():
-            pass
+        if is_service:
+            while True:
+                pass
+        else:
+            while HandleCmd():
+                pass
     finally:
         ws.Stop()
 
