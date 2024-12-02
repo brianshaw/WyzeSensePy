@@ -24,7 +24,7 @@ sudo vi /lib/systemd/system/wyzesensepy.service
 Description=WyzeSensePy Service
 
 [Service]
-ExecStart=/home/pi/WyzeSensePy/venv/bin/python3 /home/pi/WyzeSensePy/sample.py
+ExecStart=/home/pi/WyzeSensePy/venv/bin/python3 /home/pi/WyzeSensePy/sample.py --service
 StandardOutput=journal+console
 WorkingDirectory=/home/pi/WyzeSensePy/
 
