@@ -3,7 +3,7 @@ import time
 import asyncio
 
 class RpiButtonsLeds:
-    LED_PIN = 16
+    LED_PIN = 18
     BUTTON_PIN = 10
     t0 = -1
     t1 = -1

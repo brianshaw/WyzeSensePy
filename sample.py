@@ -31,18 +31,25 @@ import Sound
 import asyncio
 
 rpiButtonsLeds = None
+runningsounds = False
 
 def on_event(ws, e):
+    global runningsounds
+    global rpiButtonsLeds
     s = "[%s][%s]" % (e.Timestamp.strftime("%Y-%m-%d %H:%M:%S"), e.MAC)
     if e.Type == 'state':
         s += "StateEvent: sensor_type=%s, state=%s, battery=%d, signal=%d" % e.Data
         print(f'e.Data {e.Data}')
         if e.Data[0] == 'motion' and e.Data[1] == 'active':
-            print(f'Active')
-            if rpiButtonsLeds: rpiButtonsLeds.ledOff()
-            asyncio.run(Sound.play_random_sounds(3, 3, 'mpg321'))
-            if rpiButtonsLeds: rpiButtonsLeds.ledOn()
-            # Sound.play_random_sound('mpg321')
+            if not runningsounds:
+                print(f'Active')
+                logging.debug("Active")
+                runningsounds = True
+                if rpiButtonsLeds: rpiButtonsLeds.ledOff()
+                asyncio.run(Sound.play_random_sounds(3, 3, 'mpg321'))
+                if rpiButtonsLeds: rpiButtonsLeds.ledOn()
+                runningsounds = False
+                # Sound.play_random_sound('mpg321')
     else:
         s += "RawEvent: type=%s, data=%r" % (e.Type, e.Data)
     print(s)
