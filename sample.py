@@ -67,6 +67,7 @@ def main(args):
       logging.debug("Running on Raspberry Pi")
       from rpi_buttons_leds import RpiButtonsLeds
       rpiButtonsLeds = RpiButtonsLeds()
+      rpiButtonsLeds.ledOn()
     try:
         ws = wyzesense.Open(device, on_event)
         if not ws:
