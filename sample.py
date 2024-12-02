@@ -33,6 +33,12 @@ import asyncio
 rpiButtonsLeds = None
 runningsounds = False
 
+def resetSoundAndLed():
+    global runningsounds
+    global rpiButtonsLeds
+    runningsounds = False
+    if rpiButtonsLeds: rpiButtonsLeds.ledOn()
+
 def on_event(ws, e):
     global runningsounds
     global rpiButtonsLeds
@@ -46,14 +52,13 @@ def on_event(ws, e):
                 logging.debug("Active")
                 runningsounds = True
                 if rpiButtonsLeds: rpiButtonsLeds.ledOff()
-                asyncio.run(Sound.play_random_sounds(3, 3, 'mpg321'))
-                if rpiButtonsLeds: rpiButtonsLeds.ledOn()
-                runningsounds = False
+                asyncio.run(Sound.play_random_sounds(3, 3, 'mpg321', resetSoundAndLed))
+                # if rpiButtonsLeds: rpiButtonsLeds.ledOn()
+                # runningsounds = False
                 # Sound.play_random_sound('mpg321')
     else:
         s += "RawEvent: type=%s, data=%r" % (e.Type, e.Data)
     print(s)
-
 
 def main(args):
     if args['--debug']:

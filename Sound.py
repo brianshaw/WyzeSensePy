@@ -26,11 +26,13 @@ def play_random_sound(app='afplay'):
   key = random.choice(list(sounds.keys()))
   asyncio.run(playsound(key, app=app))
 
-async def play_random_sounds(number_of_sounds=3, sleep_time=3, app='afplay'):
+async def play_random_sounds(number_of_sounds=3, sleep_time=3, app='afplay', finishedCallback=None):
   for _ in range(number_of_sounds):
     key = random.choice(list(sounds.keys()))
     await playsound(key, app=app)
     time.sleep(sleep_time)
+  if finishedCallback:
+    finishedCallback()
 
 
 def playbackgroundsound(key, app='afplay', vol=50):
