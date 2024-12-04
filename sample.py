@@ -79,6 +79,7 @@ def on_event(ws, e):
             if rpiButtonsLeds: rpiButtonsLeds.ledOff()
             # asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
             playSoundsThread.start()
+            print('sounds started')
             # playSounds()
             # asyncio.create_task(playSounds())
                 # if rpiButtonsLeds: rpiButtonsLeds.ledOn()
