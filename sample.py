@@ -48,7 +48,7 @@ stop_event = threading.Event()
 def playSounds(start_event, stop_event):
     playing = False
     while True:
-        print('playSounds loop')
+        # print('playSounds loop')
         if start_event.wait(1) and start_event.is_set() and not stop_event.is_set():
             asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
         # if stop_event.is_set():
@@ -109,7 +109,7 @@ def on_event(ws, e):
             stop_event.set()
             start_event.clear()
             if rpiButtonsLeds: rpiButtonsLeds.ledOn()
-            
+
             end_timer = time.perf_counter()
             timeDiff = end_timer - timer
             print(f'timeDiff {timeDiff}')
