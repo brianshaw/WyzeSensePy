@@ -70,7 +70,7 @@ def resetSoundAndLed():
     # if rpiButtonsLeds: rpiButtonsLeds.ledOn()
     print('resetSoundAndLed')
     logging.debug('resetSoundAndLed')
-    if not motionActive:
+    # if not motionActive:
         # playSoundsThread.join()
         # stop_event.set()
         
