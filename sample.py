@@ -48,6 +48,7 @@ stop_event = threading.Event()
 def playSounds(start_event, stop_event):
     playing = False
     while True:
+        print('playSounds loop')
         if playing:
             asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
         if stop_event.wait(1):
