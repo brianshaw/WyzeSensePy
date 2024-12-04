@@ -43,16 +43,21 @@ timer = 0
 motionActive = False
 
 
+start_event = threading.Event()
 stop_event = threading.Event()
-def playSounds(stop_event):
-    # global motionActive
+def playSounds(start_event, stop_event):
+    playing = False
     while True:
-        asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
+        if playing:
+            asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
         if stop_event.wait(1):
-            return
+            playing = False
+        if start_event.wait(0):
+            playing = True
 
 
-playSoundsThread = threading.Thread(target=playSounds, args=[stop_event])
+playSoundsThread = threading.Thread(target=playSounds, args=[start_event, stop_event])
+playSoundsThread.start()
 # async def playSounds():
 #     await asyncio.sleep(0)
 #     asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
@@ -85,10 +90,12 @@ def on_event(ws, e):
             timer = time.perf_counter()
             motionActive = True
             if rpiButtonsLeds: rpiButtonsLeds.ledOff()
+            start_event.set()
+            start_event.clear()
             # asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
-            playSoundsThread.join()
-            playSoundsThread.start()
-            print('sounds started')
+            # playSoundsThread.join()
+            # playSoundsThread.start()
+            
             # playSounds()
             # asyncio.create_task(playSounds())
                 # if rpiButtonsLeds: rpiButtonsLeds.ledOn()
