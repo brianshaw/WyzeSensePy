@@ -54,7 +54,7 @@ def on_event(ws, e):
         if e.Data[0] == 'motion' and e.Data[1] == 'active':
             print(f'Active')
             logging.debug("Active")
-            timer = time.time()
+            timer = time.perf_counter()
             if rpiButtonsLeds: rpiButtonsLeds.ledOff()
             asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
                 # if rpiButtonsLeds: rpiButtonsLeds.ledOn()
@@ -63,8 +63,8 @@ def on_event(ws, e):
         if e.Data[0] == 'motion' and e.Data[1] == 'inactive':
             print(f'Inactive')
             logging.debug("Inactive")
-            current = time.time()
-            timeDiff = current - timer
+            end_timer = time.perf_counter()
+            timeDiff = end_timer - timer
             print(f'timeDiff {timeDiff}')
             logging.debug(f'timeDiff {timeDiff}')
             timer = 0
