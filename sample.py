@@ -52,7 +52,7 @@ def playSounds(start_event, stop_event):
             asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
         if stop_event.wait(1):
             playing = False
-        if start_event.wait(0):
+        if start_event.wait(1):
             playing = True
 
 
