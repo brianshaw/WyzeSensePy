@@ -31,11 +31,14 @@ import binascii
 import wyzesense
 import Sound
 import asyncio
+import time
 
 rpiButtonsLeds = None
 runningsounds = False
 soundclips = 3
 soundtime = 5
+timer = 0
+
 
 def resetSoundAndLed():
     global rpiButtonsLeds
@@ -43,6 +46,7 @@ def resetSoundAndLed():
 
 def on_event(ws, e):
     global rpiButtonsLeds
+    global timer
     s = "[%s][%s]" % (e.Timestamp.strftime("%Y-%m-%d %H:%M:%S"), e.MAC)
     if e.Type == 'state':
         s += "StateEvent: sensor_type=%s, state=%s, battery=%d, signal=%d" % e.Data
@@ -50,14 +54,25 @@ def on_event(ws, e):
         if e.Data[0] == 'motion' and e.Data[1] == 'active':
             print(f'Active')
             logging.debug("Active")
+            timer = time.time()
             if rpiButtonsLeds: rpiButtonsLeds.ledOff()
             asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
                 # if rpiButtonsLeds: rpiButtonsLeds.ledOn()
                 # runningsounds = False
                 # Sound.play_random_sound('mpg321')
+        if e.Data[0] == 'motion' and e.Data[1] == 'inactive':
+            print(f'Inactive')
+            logging.debug("Inactive")
+            current = time.time()
+            timeDiff = current - timer
+            print(f'timeDiff {timeDiff}')
+            logging.debug(f'timeDiff {timeDiff}')
+            timer = 0
+            
     else:
         s += "RawEvent: type=%s, data=%r" % (e.Type, e.Data)
     print(s)
+    logging.debug(s)
 
 def main(args):
     global rpiButtonsLeds
