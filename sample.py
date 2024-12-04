@@ -64,7 +64,8 @@ def on_event(ws, e):
             timer = time.perf_counter()
             motionActive = True
             if rpiButtonsLeds: rpiButtonsLeds.ledOff()
-            asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
+            # asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
+            asyncio.create_task(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
                 # if rpiButtonsLeds: rpiButtonsLeds.ledOn()
                 # runningsounds = False
                 # Sound.play_random_sound('mpg321')
