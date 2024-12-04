@@ -47,12 +47,15 @@ def resetSoundAndLed():
     # if rpiButtonsLeds: rpiButtonsLeds.ledOn()
     print('resetSoundAndLed')
     logging.debug('resetSoundAndLed')
-    if motionActive:
-        asyncio.create_task(playSounds())
+    
 
-async def playSounds():
-    await asyncio.sleep(0)
-    asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
+def playSounds():
+    global motionActive
+    while motionActive:
+        asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
+# async def playSounds():
+#     await asyncio.sleep(0)
+#     asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
 
 def on_event(ws, e):
     global rpiButtonsLeds
@@ -69,7 +72,8 @@ def on_event(ws, e):
             motionActive = True
             if rpiButtonsLeds: rpiButtonsLeds.ledOff()
             # asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
-            asyncio.create_task(playSounds())
+            playSounds()
+            # asyncio.create_task(playSounds())
                 # if rpiButtonsLeds: rpiButtonsLeds.ledOn()
                 # runningsounds = False
                 # Sound.play_random_sound('mpg321')
