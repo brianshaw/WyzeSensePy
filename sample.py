@@ -43,15 +43,6 @@ timer = 0
 motionActive = False
 
 
-def resetSoundAndLed():
-    global motionActive
-    # global rpiButtonsLeds
-    # if rpiButtonsLeds: rpiButtonsLeds.ledOn()
-    print('resetSoundAndLed')
-    logging.debug('resetSoundAndLed')
-    if not motionActive:
-        playSoundsThread.stop()
-    
 
 def playSounds():
     global motionActive
@@ -63,10 +54,22 @@ playSoundsThread = threading.Thread(target=playSounds)
 #     await asyncio.sleep(0)
 #     asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
 
+def resetSoundAndLed():
+    global motionActive
+    global playSoundsThread
+    # global rpiButtonsLeds
+    # if rpiButtonsLeds: rpiButtonsLeds.ledOn()
+    print('resetSoundAndLed')
+    logging.debug('resetSoundAndLed')
+    if not motionActive:
+        playSoundsThread.stop()
+    
+
 def on_event(ws, e):
     global rpiButtonsLeds
     global timer
     global motionActive
+    global playSoundsThread
     s = "[%s][%s]" % (e.Timestamp.strftime("%Y-%m-%d %H:%M:%S"), e.MAC)
     if e.Type == 'state':
         s += "StateEvent: sensor_type=%s, state=%s, battery=%d, signal=%d" % e.Data
