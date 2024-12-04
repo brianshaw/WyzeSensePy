@@ -62,7 +62,7 @@ def resetSoundAndLed():
     print('resetSoundAndLed')
     logging.debug('resetSoundAndLed')
     if not motionActive:
-        playSoundsThread.stop()
+        playSoundsThread.join()
     
 
 def on_event(ws, e):
