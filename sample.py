@@ -32,6 +32,8 @@ import wyzesense
 import Sound
 import asyncio
 import time
+import threading
+
 
 rpiButtonsLeds = None
 runningsounds = False
@@ -53,6 +55,8 @@ def playSounds():
     global motionActive
     while motionActive:
         asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
+
+playSoundsThread = threading.Thread(target=playSounds)
 # async def playSounds():
 #     await asyncio.sleep(0)
 #     asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
@@ -72,7 +76,8 @@ def on_event(ws, e):
             motionActive = True
             if rpiButtonsLeds: rpiButtonsLeds.ledOff()
             # asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
-            playSounds()
+            playSoundsThread.start()
+            # playSounds()
             # asyncio.create_task(playSounds())
                 # if rpiButtonsLeds: rpiButtonsLeds.ledOn()
                 # runningsounds = False
