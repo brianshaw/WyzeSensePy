@@ -47,10 +47,11 @@ volume = 50
 
 start_event = threading.Event()
 stop_event = threading.Event()
-def playSounds(start_event, stop_event):
+exit_event = threading.Event()
+def playSounds(start_event, stop_event, exit_event):
     playing = False
     global volume
-    while True:
+    while not exit_event.is_set():
         # print('playSounds loop')
         if start_event.wait(1) and start_event.is_set() and not stop_event.is_set():
             asyncio.run(Sound.play_random_sounds(soundclips, soundtime, f'mpg321 -g {volume} -o alsa', resetSoundAndLed))
@@ -60,7 +61,7 @@ def playSounds(start_event, stop_event):
         #     playing = True
 
 
-playSoundsThread = threading.Thread(target=playSounds, args=[start_event, stop_event])
+playSoundsThread = threading.Thread(target=playSounds, args=[start_event, stop_event, exit_event])
 playSoundsThread.start()
 # async def playSounds():
 #     await asyncio.sleep(0)
@@ -234,6 +235,7 @@ def main(args):
     finally:
         ws.Stop()
         if rpiButtonsLeds: rpiButtonsLeds.ledOff()
+        exit_event.set()
         playSoundsThread.join()
 
     return 0
