@@ -1,1 +1,1 @@
-sudo cp wyzesense.service /lib/systemd/system/
+sudo cp /home/pi/WyzeSensePy/wyzesense.service /lib/systemd/system/
