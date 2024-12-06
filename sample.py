@@ -12,6 +12,7 @@
     --device PATH   USB device path [default: /dev/hidraw0]
     -s, --service   run as service,
     -r, --rpi       run on raspberry pi
+    --volume=<volume>  Volume of sound [default: 50]
     --soundclips=<soundclips>  Sound clips toplay [default: 3] 
     --soundtime=<soundtime>  Time between sound clips [default: 5]
 
@@ -41,16 +42,18 @@ soundclips = 3
 soundtime = 5
 timer = 0
 motionActive = False
+volume = 50
 
 
 start_event = threading.Event()
 stop_event = threading.Event()
 def playSounds(start_event, stop_event):
     playing = False
+    global volume
     while True:
         # print('playSounds loop')
         if start_event.wait(1) and start_event.is_set() and not stop_event.is_set():
-            asyncio.run(Sound.play_random_sounds(soundclips, soundtime, 'mpg321', resetSoundAndLed))
+            asyncio.run(Sound.play_random_sounds(soundclips, soundtime, f'mpg321 -g {volume} -o alsa', resetSoundAndLed))
         # if stop_event.is_set():
         #     playing = False
         # if start_event.is_set():
@@ -146,6 +149,8 @@ def main(args):
     global soundclips
     if args['--soundclips']:
         soundclips = int(args['--soundclips'])
+    if args['--volume']:
+        volume = int(args['--volume'])
     global soundtime
     if args['--soundtime']:
         soundtime = int(args['--soundtime'])
