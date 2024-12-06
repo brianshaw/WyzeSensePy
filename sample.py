@@ -126,6 +126,7 @@ def on_event(ws, e):
 
 def main(args):
     global rpiButtonsLeds
+    global volume
     if args['--debug']:
         loglevel = logging.DEBUG - (1 if args['--verbose'] else 0)
         logging.getLogger("wyzesense").setLevel(loglevel)
