@@ -19,17 +19,21 @@ sudo apt install -y bluetooth bluez bluez-tools pulseaudio pulseaudio-module-blu
 sudo systemctl enable bluetooth
 sudo systemctl start bluetooth
 
+# finish setting up bluetooth
 sudo vi /etc/pulse/default.pa
 # find and add
 load-module module-bluetooth-discover
 load-module module-bluetooth-policy
 load-module module-alsa-sink
 
+# restart bluetooth
+sudo systemctl restart bluetooth
 
-# user account audio
+# user account audio FOR a system service see below
 pulseaudio -k
 pulseaudio --start
 
+# setup bluetooth
 bluetoothctl
 # then in bluetoothctl app
 power on
@@ -41,11 +45,23 @@ pair <MAC_ADDRESS>
 trust <MAC_ADDRESS>
 connect <MAC_ADDRESS>
 
+# small cisco speaker
+pair 04:C8:70:21:10:20
+trust 04:C8:70:21:10:20
+connect 04:C8:70:21:10:20
+
+# debug not connecting reboot
+
+
+
 # https://learn.adafruit.com/running-programs-automatically-on-your-tiny-computer/systemd-writing-and-enabling-a-service
 
 sudo chmod +x sample.py
-sudo vi /lib/systemd/system/wyzesensepy.service
 
+sudo cp wyzesensepy.service /lib/systemd/system/wyzesensepy.service
+# OR
+sudo vi /lib/systemd/system/wyzesensepy.service
+# start file contents
 [Unit]
 Description=WyzeSensePy Service
 
@@ -58,10 +74,7 @@ WorkingDirectory=/home/pi/WyzeSensePy/
 [Install]
 WantedBy=multi-user.target
 Alias=wyzesensepy.service
-
-
-
-sudo cp wyzesensepy.service /lib/systemd/system/wyzesensepy.service
+# end file contents
 
 
 # Use this for no logging
@@ -71,9 +84,9 @@ StandardOutput=journal+console
 # use this to read the log
 journalctl -u wyzesensepy.service
 
+
 sudo systemctl enable wyzesensepy.service
 sudo systemctl start wyzesensepy.service
-
 
 sudo systemctl status wyzesensepy.service
 
@@ -97,21 +110,48 @@ sudo usermod -aG pulse-access pi
 
 # set autospawn = no in /etc/pulse/client.conf
 sudo vi /etc/pulse/client.conf
-# asd
+# find autospawn set
+autospawn = no
+
+# enable pulse daemon system mode
 sudo vi /etc/pulse/daemon.conf
 # find and set to this
 daemonize = yes
 system-instance = yes
 allow-exit = no
 
-# Ensure PulseAudio's socket is writable by members of pulse-access:
-sudo chmod g+w /var/run/pulse
-sudo chown root:pulse-access /var/run/pulse
-
-
+# setup the service
 sudo cp pulseaudiosystem.service /lib/systemd/system/pulseaudiosystem.service
 sudo systemctl enable pulseaudiosystem
 sudo systemctl start pulseaudiosystem
 
 # verify its running
 sudo systemctl status pulseaudiosystem
+
+# this didn't work
+# Ensure PulseAudio's socket is writable by members of pulse-access:
+sudo chmod g+w /var/run/pulse
+sudo chown root:pulse-access /var/run/pulse
+
+
+# Test audio
+sudo mpg321 -g 50 -o alsa sounds/HEY\ -\ AUDIO\ FROM\ JAYUZUMI.COM.mp3
+
+
+# DIDNT WORK
+# volume control
+# List all available audio sinks (output devices):
+sudo pactl list sinks short
+# You should see an entry for your Bluetooth device, such as: bluez_sink.XX_XX_XX_XX_XX_XX.a2dp_sink   module-bluetooth-device  SUSPENDED
+# found this
+bluez_sink.04_C8_70_21_10_20.a2dp_sink
+# Set the volume to a specific percentage:
+# pactl set-sink-volume <sink_name> 50%
+# For example:
+
+pactl set-sink-volume bluez_sink.04_C8_70_21_10_20.a2dp_sink 50%
+# Increase the volume by 10%:
+pactl set-sink-volume bluez_sink.04_C8_70_21_10_20.a2dp_sink +10%
+
+# alsa backend
+amixer -D pulse set Master 50%

@@ -237,6 +237,7 @@ def main(args):
         if rpiButtonsLeds: rpiButtonsLeds.ledOff()
         exit_event.set()
         playSoundsThread.join()
+        if rpiButtonsLeds: rpiButtonsLeds.cleanup()
 
     return 0
 
