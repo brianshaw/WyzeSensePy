@@ -234,6 +234,7 @@ def main(args):
     finally:
         ws.Stop()
         if rpiButtonsLeds: rpiButtonsLeds.ledOff()
+        playSoundsThread.join()
 
     return 0
 
