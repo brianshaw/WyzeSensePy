@@ -1,0 +1,1 @@
+sudo cp wyzesense.service /lib/systemd/system/

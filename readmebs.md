@@ -54,3 +54,8 @@ sudo systemctl status wyzesensepy.service
 
 sudo systemctl stop wyzesensepy.service
 sudo systemctl disable wyzesensepy.service
+
+
+Bluetooth speaker for system / service - https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/SystemWide/
+
+sudo systemctl --global disable pulseaudio.service pulseaudio.socket
