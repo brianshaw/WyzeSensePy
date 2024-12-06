@@ -84,6 +84,7 @@ sudo systemctl disable wyzesensepy.service
 
 Bluetooth speaker for system / service - https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/SystemWide/
 
+# disable existing service
 sudo systemctl --global disable pulseaudio.service pulseaudio.socket
 
 # Make sure the required groups (audio, bluetooth, and pulse-access) exist:
@@ -108,9 +109,9 @@ sudo chmod g+w /var/run/pulse
 sudo chown root:pulse-access /var/run/pulse
 
 
-sudo cp pulseaudio.service /lib/systemd/system/pulseaudio.service
-sudo systemctl enable pulseaudio
-sudo systemctl start pulseaudio
+sudo cp pulseaudiosystem.service /lib/systemd/system/pulseaudiosystem.service
+sudo systemctl enable pulseaudiosystem
+sudo systemctl start pulseaudiosystem
 
 # verify its running
-sudo systemctl status pulseaudio
+sudo systemctl status pulseaudiosystem
