@@ -37,6 +37,7 @@ Alias=wyzesensepy.service
 
 
 
+sudo cp wyzesensepy.service /lib/systemd/system/wyzesensepy.service
 
 
 # Use this for no logging
