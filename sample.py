@@ -128,9 +128,15 @@ def on_event(ws, e):
 async def buttonPressed():
     print('Button short press callback called')
     logging.debug('Button short press callback called')
+    print('Stopping Sound')
+    logging.debug('Stopping Sound')
+    stop_event.set()
 async def buttonLongPressed():
     print('Button long press callback called')
     logging.debug('Button long press callback called')
+    if rpiButtonsLeds: rpiButtonsLeds.ledOn()
+    from subprocess import call
+    call("sudo shutdown -h now", shell=True)
 
 async def main(args):
     global rpiButtonsLeds
