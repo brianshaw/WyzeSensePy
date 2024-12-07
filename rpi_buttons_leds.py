@@ -4,21 +4,24 @@ import asyncio
 
 class RpiButtonsLeds:
     LED_PIN = 7 # in setmode(GPIO.BOARD) this is pin 7 on the board, using BCM would be referencing the gpio name
-    BUTTON_PIN = 10
+    BUTTON_PIN = 15
     t0 = -1
     t1 = -1
     buttonPressed = False
+    buttonLongPressed = False
 
       # total = t1-t0
 
     def __init__(self, debug=False):
       self.buttonCallback = None
       self.setupGPIO()
-      # self.setup_buttons()
+      self.setup_buttons()
       self.setup_leds()
 
     def setButtonCallback(self, callback):
       self.buttonCallback = callback
+    def setButtonCallbackLongPress(self, callback):
+      self.buttonLongPressed = callback
       
     def setupGPIO(self):
       GPIO.setwarnings(False) # Ignore warning for now
@@ -61,12 +64,19 @@ class RpiButtonsLeds:
                 self.t0 = time.time()
             self.t1 = time.time()
             total = self.t1-self.t0
-            if (total > 0.5 and self.buttonPressed is not True):
+            if (total > 5 and self.buttonLongPressed is not True):
+              print(f"Button was long pressed! {total}")
+              if self.buttonLongPressed:
+                await self.buttonLongPressed()
+              else:
+                print('No button long press callback')
+              self.buttonPressed = True
+            elif (total > 0.5 and total <= 5 and self.buttonPressed is not True):
               print(f"Button was pressed! {total}")
               if self.buttonCallback:
                 await self.buttonCallback()
               else:
-                print('No button callback')
+                print('No button press callback')
               self.buttonPressed = True
           elif self.t0 >= 0 and GPIO.input(self.BUTTON_PIN) == GPIO.LOW:
               # t1 = time.time()

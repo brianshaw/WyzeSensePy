@@ -125,6 +125,13 @@ def on_event(ws, e):
     print(s)
     logging.debug(s)
 
+async def buttonPressed():
+    print('Button was pressed')
+    logging.debug('Button was pressed')
+async def buttonLongPressed():
+    print('Button was long pressed')
+    logging.debug('Button was long pressed')
+
 def main(args):
     global rpiButtonsLeds
     global volume
@@ -147,6 +154,8 @@ def main(args):
       from rpi_buttons_leds import RpiButtonsLeds
       rpiButtonsLeds = RpiButtonsLeds()
       rpiButtonsLeds.ledOn()
+      rpiButtonsLeds.setButtonCallback(callback=buttonPressed)
+      rpiButtonsLeds.setButtonCallbackLongPress(callback=buttonLongPressed)
 
     global soundclips
     if args['--soundclips']:
