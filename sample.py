@@ -208,13 +208,7 @@ async def main(args):
             print("Sensor %s removed" % mac)
             logging.debug("Sensor %s removed", mac)
 
-    async def HandleCmd():
-        print('HandleCmd')
-        global rpiButtonsLeds
-        if rpiButtonsLeds:
-            await asyncio.gather(
-                rpiButtonsLeds.checkButtons()
-            )
+    def HandleCmd():
         cmd_handlers = {
             'L': ('L to list', List),
             'P': ('P to pair', Pair),
@@ -244,12 +238,12 @@ async def main(args):
         if is_service:
             while True:
                 if rpiButtonsLeds:
-                    await asyncio.gather(
-                        rpiButtonsLeds.checkButtons()
-                    )
+                    await rpiButtonsLeds.checkButtons()
                 pass
         else:
             while HandleCmd():
+                if rpiButtonsLeds:
+                    await rpiButtonsLeds.checkButtons()
                 pass
     finally:
         ws.Stop()
@@ -271,6 +265,7 @@ if __name__ == '__main__':
 
     # remove restructured text formatting before input to docopt
     usage = re.sub(r'(?<=\n)\*\*(\w+:)\*\*.*\n', r'\1', __doc__)
+    # sys.exit(main(docopt(usage)))
     # Check if the event loop is already running
     try:
         asyncio.get_running_loop()
@@ -279,4 +274,3 @@ if __name__ == '__main__':
     except RuntimeError:
         # No loop is running, so we can safely run it
         asyncio.run(main(docopt(usage)))
-    # sys.exit(main(docopt(usage)))
