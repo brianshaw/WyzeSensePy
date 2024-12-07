@@ -209,6 +209,7 @@ async def main(args):
             logging.debug("Sensor %s removed", mac)
 
     async def HandleCmd():
+        global rpiButtonsLeds
         if rpiButtonsLeds:
             await asyncio.gather(
                 rpiButtonsLeds.checkButtons()
