@@ -132,7 +132,7 @@ async def buttonLongPressed():
     print('Button was long pressed')
     logging.debug('Button was long pressed')
 
-def main(args):
+async def main(args):
     global rpiButtonsLeds
     global volume
     if args['--debug']:
@@ -208,7 +208,11 @@ def main(args):
             print("Sensor %s removed" % mac)
             logging.debug("Sensor %s removed", mac)
 
-    def HandleCmd():
+    async def HandleCmd():
+        if rpiButtonsLeds:
+            await asyncio.gather(
+                rpiButtonsLeds.checkButtons()
+            )
         cmd_handlers = {
             'L': ('L to list', List),
             'P': ('P to pair', Pair),
@@ -237,6 +241,10 @@ def main(args):
     try:
         if is_service:
             while True:
+                if rpiButtonsLeds:
+                    await asyncio.gather(
+                        rpiButtonsLeds.checkButtons()
+                    )
                 pass
         else:
             while HandleCmd():
@@ -261,4 +269,12 @@ if __name__ == '__main__':
 
     # remove restructured text formatting before input to docopt
     usage = re.sub(r'(?<=\n)\*\*(\w+:)\*\*.*\n', r'\1', __doc__)
-    sys.exit(main(docopt(usage)))
+    # Check if the event loop is already running
+    try:
+        asyncio.get_running_loop()
+        # If the loop is already running, just run the main function
+        asyncio.ensure_future(main(docopt(usage)))
+    except RuntimeError:
+        # No loop is running, so we can safely run it
+        asyncio.run(main(docopt(usage)))
+    # sys.exit(main(docopt(usage)))

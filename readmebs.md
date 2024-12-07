@@ -14,6 +14,10 @@ pip install docopt
 pip install pigpio
 pip install RPi.GPIO
 
+
+# test
+/home/pi/WyzeSensePy/venv/bin/python3 /home/pi/WyzeSensePy/sample.py -r --soundclips 4 --soundtime 7 --volume 30
+
 # BLUETOOTH SPEAKER
 sudo apt install -y bluetooth bluez bluez-tools pulseaudio pulseaudio-module-bluetooth alsa-utils
 sudo systemctl enable bluetooth
@@ -67,7 +71,7 @@ Description=WyzeSensePy Service
 
 [Service]
 Type=simple
-ExecStart=/home/pi/WyzeSensePy/venv/bin/python3 /home/pi/WyzeSensePy/sample.py --service
+ExecStart=/home/pi/WyzeSensePy/venv/bin/python3 /home/pi/WyzeSensePy/sample.py --service -r --soundclips 4 --soundtime 7 --volume 30
 StandardOutput=journal+console
 WorkingDirectory=/home/pi/WyzeSensePy/
 
