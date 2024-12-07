@@ -15,7 +15,7 @@ pip install pigpio
 pip install RPi.GPIO
 
 # BLUETOOTH SPEAKER
-sudo apt install -y bluetooth bluez bluez-tools pulseaudio pulseaudio-module-bluetooth
+sudo apt install -y bluetooth bluez bluez-tools pulseaudio pulseaudio-module-bluetooth alsa-utils
 sudo systemctl enable bluetooth
 sudo systemctl start bluetooth
 
@@ -82,7 +82,7 @@ StandardOutput=null
 # Use this for logging
 StandardOutput=journal+console
 # use this to read the log
-journalctl -u wyzesensepy.service
+journalctl -e -u wyzesensepy.service
 
 
 sudo systemctl enable wyzesensepy.service
@@ -104,6 +104,7 @@ sudo systemctl --global disable pulseaudio.service pulseaudio.socket
 sudo groupadd -f pulse-access
 # Add the pulse user to the required groups:
 sudo usermod -aG audio,pulse-access,bluetooth pulse
+
 # Add any other users who need access (including root or pi):
 sudo usermod -aG pulse-access root
 sudo usermod -aG pulse-access pi
@@ -119,6 +120,16 @@ sudo vi /etc/pulse/daemon.conf
 daemonize = yes
 system-instance = yes
 allow-exit = no
+
+# Modify the pulse user's home directory to /var/run/pulse:
+sudo mkdir -p /var/run/pulse
+sudo chown pulse:pulse-access /var/run/pulse
+sudo usermod -d /var/run/pulse pulse
+# create cookie folder
+sudo mkdir -p /var/run/pulse/.config/pulse
+sudo chown -R pulse:pulse-access /var/run/pulse
+sudo chmod -R 775 /var/run/pulse
+
 
 # setup the service
 sudo cp pulseaudiosystem.service /lib/systemd/system/pulseaudiosystem.service
@@ -155,3 +166,9 @@ pactl set-sink-volume bluez_sink.04_C8_70_21_10_20.a2dp_sink +10%
 
 # alsa backend
 amixer -D pulse set Master 50%
+
+
+
+
+# list all pulseaduio
+sudo fuser -v /dev/snd/*
