@@ -72,28 +72,29 @@ class RpiButtonsLeds:
               # total = t1-t0
               # if (total > 0.5):
               print(f"Button was released! {self.total}")
+          
+              if (self.total > 5 and self.buttonPressed):
+                print(f"Button was long pressed! {self.total}")
+                if self.buttonCallbackLongPressed:
+                  if not self.callbackInitiated:
+                    self.callbackInitiated = True
+                    await self.buttonCallbackLongPressed()
+                else:
+                  print('No button long press callback')
+              elif (self.total > 0.5 and self.total <= 5 and self.buttonPressed):
+                print(f"Button was pressed! {self.total}")
+                if self.buttonCallback:
+                  if not self.callbackInitiated:
+                    self.callbackInitiated = True
+                    await self.buttonCallback()
+                else:
+                  print('No button press callback')
+              # Reset the button press variables
               self.t0 = -1
               self.t1 = -1
               self.buttonPressed = False
               self.callbackInitiated = False
               self.total = -1
-          
-          if (self.total > 5 and self.buttonPressed):
-            print(f"Button was long pressed! {self.total}")
-            if self.buttonCallbackLongPressed:
-              if not self.callbackInitiated:
-                await self.buttonCallbackLongPressed()
-                self.callbackInitiated = True
-            else:
-              print('No button long press callback')
-          elif (self.total > 0.5 and self.total <= 5 and self.buttonPressed):
-            print(f"Button was pressed! {self.total}")
-            if self.buttonCallback:
-              if not self.callbackInitiated:
-                self.callbackInitiated = True
-                await self.buttonCallback()
-            else:
-              print('No button press callback')
           await asyncio.sleep(0.5)
             
       except KeyboardInterrupt:
