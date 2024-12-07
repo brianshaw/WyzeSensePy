@@ -126,11 +126,11 @@ def on_event(ws, e):
     logging.debug(s)
 
 async def buttonPressed():
-    print('Button was pressed')
-    logging.debug('Button was pressed')
+    print('Button short press callback called')
+    logging.debug('Button short press callback called')
 async def buttonLongPressed():
-    print('Button was long pressed')
-    logging.debug('Button was long pressed')
+    print('Button long press callback called')
+    logging.debug('Button long press callback called')
 
 async def main(args):
     global rpiButtonsLeds

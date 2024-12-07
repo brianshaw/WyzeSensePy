@@ -82,7 +82,7 @@ class RpiButtonsLeds:
                 else:
                   print('No button long press callback')
               elif (self.total > 0.5 and self.total <= 5 and self.buttonPressed):
-                print(f"Button was pressed! {self.total}")
+                print(f"Button was short pressed! {self.total}")
                 if self.buttonCallback:
                   if not self.callbackInitiated:
                     self.callbackInitiated = True
