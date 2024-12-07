@@ -10,7 +10,7 @@ class RpiButtonsLeds:
     buttonPressed = False
     buttonLongPressed = False
     callbackInitiated = False
-
+    total = 0
       # total = t1-t0
 
     def __init__(self, debug=False):
