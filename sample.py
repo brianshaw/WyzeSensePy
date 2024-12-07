@@ -243,6 +243,7 @@ async def main(args):
         if is_service:
             while True:
                 if rpiButtonsLeds:
+                    print('f')
                     await asyncio.gather(
                         rpiButtonsLeds.checkButtons()
                     )
