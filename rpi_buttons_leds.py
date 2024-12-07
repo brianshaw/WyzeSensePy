@@ -52,7 +52,8 @@ class RpiButtonsLeds:
     def resetLed(self):
       self.ledOff()
       self.cleanup()
-    def cleanup():
+    
+    def cleanup(self):
       GPIO.cleanup()
     
     async def checkButtons(self):
