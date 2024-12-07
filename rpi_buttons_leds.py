@@ -9,6 +9,7 @@ class RpiButtonsLeds:
     t1 = -1
     buttonPressed = False
     buttonLongPressed = False
+    callbackInitiated = False
 
       # total = t1-t0
 
@@ -21,7 +22,7 @@ class RpiButtonsLeds:
     def setButtonCallback(self, callback):
       self.buttonCallback = callback
     def setButtonCallbackLongPress(self, callback):
-      self.buttonLongPressed = callback
+      self.buttonCallbackLongPressed = callback
       
     def setupGPIO(self):
       GPIO.setwarnings(False) # Ignore warning for now
@@ -60,25 +61,12 @@ class RpiButtonsLeds:
       try:
         while True:  
           if GPIO.input(self.BUTTON_PIN) == GPIO.HIGH:
-            # print("Button was pushed!")
+            print("Button was pushed!")
             if self.t0 == -1:
                 self.t0 = time.time()
             self.t1 = time.time()
             total = self.t1-self.t0
-            if (total > 5 and self.buttonLongPressed is not True):
-              print(f"Button was long pressed! {total}")
-              if self.buttonLongPressed:
-                await self.buttonLongPressed()
-              else:
-                print('No button long press callback')
-              self.buttonPressed = True
-            elif (total > 0.5 and total <= 5 and self.buttonPressed is not True):
-              print(f"Button was pressed! {total}")
-              if self.buttonCallback:
-                await self.buttonCallback()
-              else:
-                print('No button press callback')
-              self.buttonPressed = True
+            self.buttonPressed = True
           elif self.t0 >= 0 and GPIO.input(self.BUTTON_PIN) == GPIO.LOW:
               # t1 = time.time()
               # total = t1-t0
@@ -87,6 +75,24 @@ class RpiButtonsLeds:
               self.t0 = -1
               self.t1 = -1
               self.buttonPressed = False
+              self.callbackInitiated = False
+          
+          if (total > 5 and self.buttonPressed):
+            print(f"Button was long pressed! {total}")
+            if self.buttonCallbackLongPressed:
+              if not self.callbackInitiated:
+                await self.buttonCallbackLongPressed()
+                self.callbackInitiated = True
+            else:
+              print('No button long press callback')
+          elif (total > 0.5 and total <= 5 and self.buttonPressed):
+            print(f"Button was pressed! {total}")
+            if self.buttonCallback:
+              if not self.callbackInitiated:
+                self.callbackInitiated = True
+                await self.buttonCallback()
+            else:
+              print('No button press callback')
           await asyncio.sleep(0.5)
             
       except KeyboardInterrupt:
