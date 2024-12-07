@@ -10,7 +10,7 @@ class RpiButtonsLeds:
     buttonPressed = False
     buttonLongPressed = False
     callbackInitiated = False
-    total = 0
+    total = -1
       # total = t1-t0
 
     def __init__(self, debug=False):
@@ -65,28 +65,29 @@ class RpiButtonsLeds:
             if self.t0 == -1:
                 self.t0 = time.time()
             self.t1 = time.time()
-            total = self.t1-self.t0
+            self.total = self.t1-self.t0
             self.buttonPressed = True
           elif self.t0 >= 0 and GPIO.input(self.BUTTON_PIN) == GPIO.LOW:
               # t1 = time.time()
               # total = t1-t0
               # if (total > 0.5):
-              print(f"Button was released! {total}")
+              print(f"Button was released! {self.total}")
               self.t0 = -1
               self.t1 = -1
               self.buttonPressed = False
               self.callbackInitiated = False
+              self.total = -1
           
-          if (total > 5 and self.buttonPressed):
-            print(f"Button was long pressed! {total}")
+          if (self.total > 5 and self.buttonPressed):
+            print(f"Button was long pressed! {self.total}")
             if self.buttonCallbackLongPressed:
               if not self.callbackInitiated:
                 await self.buttonCallbackLongPressed()
                 self.callbackInitiated = True
             else:
               print('No button long press callback')
-          elif (total > 0.5 and total <= 5 and self.buttonPressed):
-            print(f"Button was pressed! {total}")
+          elif (self.total > 0.5 and self.total <= 5 and self.buttonPressed):
+            print(f"Button was pressed! {self.total}")
             if self.buttonCallback:
               if not self.callbackInitiated:
                 self.callbackInitiated = True
