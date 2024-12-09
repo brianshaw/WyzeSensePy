@@ -56,6 +56,17 @@ connect 04:C8:70:21:10:20
 
 # debug not connecting reboot
 
+# might need to set default sink
+pactl list sinks
+# Identify the name or index of your Bluetooth sink from the output (e.g., bluez_sink.<MAC_ADDRESS>). Then set it as the default:
+pactl set-default-sink <sink_name>
+# Example:
+pactl set-default-sink bluez_sink.XX_XX_XX_XX_XX_XX
+
+
+# Test audio
+mpg321 -g 50 -o alsa /home/pi/WyzeSense/sounds/HEY\ -\ AUDIO\ FROM\ JAYUZUMI.COM.mp3
+mpg321 /home/pi/WyzeSense/sounds/HEY\ -\ AUDIO\ FROM\ JAYUZUMI.COM.mp3
 
 
 # https://learn.adafruit.com/running-programs-automatically-on-your-tiny-computer/systemd-writing-and-enabling-a-service
@@ -99,7 +110,8 @@ sudo systemctl disable wyzesensepy.service
 
 
 
-Bluetooth speaker for system / service - https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/SystemWide/
+# DIDNT WORK
+# Bluetooth speaker for system / service - https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/SystemWide/
 
 # disable existing service
 sudo systemctl --global disable pulseaudio.service pulseaudio.socket
