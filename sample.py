@@ -15,6 +15,7 @@
     --volume=<volume>  Volume of sound [default: 50]
     --soundclips=<soundclips>  Sound clips toplay [default: 3] 
     --soundtime=<soundtime>  Time between sound clips [default: 5]
+    --speakerid=<speakerid>  Speaker ID [default: 'none']
 
 **Examples:** ::
 
@@ -146,6 +147,10 @@ async def main(args):
         loglevel = logging.DEBUG - (1 if args['--verbose'] else 0)
         logging.getLogger("wyzesense").setLevel(loglevel)
         logging.getLogger().setLevel(loglevel)
+
+    speakerid = args['--speakerid']
+    if speakerid is not 'none':
+        Sound.connectToSpeaker(speakerid)
 
     device = args['--device']
     print("Openning wyzesense gateway [%r]" % device)

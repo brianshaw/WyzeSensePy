@@ -121,6 +121,11 @@ async def test(app='afplay'):
         playsound('4', app=app),
     )
 
+def connectToSpeaker(speakerid):
+    print(f'Connecting to speaker {speakerid}')
+    if speakerid != 'none':
+        print(f'Connecting to speaker {speakerid}')
+        os.system(f'bluetoothctl connect {speakerid}')
 # # Run the test function
 # if __name__ == "__main__":
 #     asyncio.run(test())

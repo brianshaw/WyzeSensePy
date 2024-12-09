@@ -3,7 +3,7 @@ Description=WyzeSensePy Service
 
 [Service]
 Type=simple
-ExecStart=/home/pi/WyzeSensePy/venv/bin/python3 /home/pi/WyzeSensePy/sample.py --service -r --soundclips 4 --soundtime 7 --volume 30
+ExecStart=sudo /home/pi/WyzeSensePy/venv/bin/python3 /home/pi/WyzeSensePy/sample.py --service -r --soundclips 4 --soundtime 7 --volume 80 --speakerid 04:C8:70:21:10:20
 StandardOutput=null
 WorkingDirectory=/home/pi/WyzeSensePy/
 

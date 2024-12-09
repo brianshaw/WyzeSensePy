@@ -2,8 +2,6 @@ sudo apt update
 sudo apt -y install python3-pip python3-virtualenv pigpio python3-pigpio git vim ffmpeg mpg321
 sudo systemctl enable pigpiod 
 
-sudo chmod 666 /dev/hidraw0
-
 git clone https://github.com/brianshaw/WyzeSensePy
 
 cd WyzeSensePy
@@ -13,6 +11,21 @@ source venv/bin/activate
 pip install docopt
 pip install pigpio
 pip install RPi.GPIO
+
+
+# setup usb device access for sensor
+sudo chmod 666 /dev/hidraw0
+# OR
+sudo vi /etc/udev/rules.d/50-usb-sensor.conf
+# OR
+sudo cp 99-usb-sensor.conf /etc/udev/rules.d/99-usb-sensor.conf
+
+# test hot reload
+sudo udevadm control --reload
+sudo udevadm trigger
+# not recognizing use this to look at attrs
+udevadm info --attribute-walk --name=/dev/hidraw0
+
 
 
 # test
@@ -111,8 +124,8 @@ sudo systemctl stop wyzesensepy.service
 sudo systemctl disable wyzesensepy.service
 
 
-# https://medium.com/twodigits/using-your-raspberrypi-as-a-bluetooth-speaker-9c59366c059e
 # I did this but didn't use a custom user. just used pi
+# https://medium.com/twodigits/using-your-raspberrypi-as-a-bluetooth-speaker-9c59366c059e
 sudo vi /etc/bluetooth/main.conf
 # set this
 DiscoverableTimeout = 0 
@@ -125,7 +138,10 @@ systemctl --user start wyzesensepy.service
 systemctl --user status wyzesensepy.service
 systemctl --user stop wyzesensepy.service
 systemctl --user disable wyzesensepy.service
-sudo chmod 666 /dev/hidraw0
+
+# to clean up
+sudo rm /lib/systemd/user/wyzesensepy.service
+
 
 
 
