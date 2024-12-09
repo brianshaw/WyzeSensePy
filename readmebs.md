@@ -111,6 +111,14 @@ sudo systemctl stop wyzesensepy.service
 sudo systemctl disable wyzesensepy.service
 
 
+# https://medium.com/twodigits/using-your-raspberrypi-as-a-bluetooth-speaker-9c59366c059e
+# I did this but didn't use a custom user. just used pi
+sudo vi /etc/bluetooth/main.conf
+# set this
+DiscoverableTimeout = 0 
+
+# user systemctl
+systemctl --user enable pulseaudio
 sudo cp wyzesensepy.user.service /lib/systemd/user/wyzesensepy.service
 systemctl --user enable wyzesensepy.service
 systemctl --user start wyzesensepy.service

@@ -8,4 +8,5 @@ StandardOutput=null
 WorkingDirectory=/home/pi/WyzeSensePy/
 
 [Install]
+WantedBy=default.target
 Alias=wyzesensepy.service
