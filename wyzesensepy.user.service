@@ -5,10 +5,7 @@ Description=WyzeSensePy Service
 Type=simple
 ExecStart=/home/pi/WyzeSensePy/venv/bin/python3 /home/pi/WyzeSensePy/sample.py --service -r --soundclips 4 --soundtime 7 --volume 30
 StandardOutput=null
-User=pi
-Group=pi
 WorkingDirectory=/home/pi/WyzeSensePy/
 
 [Install]
-WantedBy=multi-user.target
 Alias=wyzesensepy.service
