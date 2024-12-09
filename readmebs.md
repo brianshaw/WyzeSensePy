@@ -77,6 +77,8 @@ pactl set-default-sink <sink_name>
 pactl set-default-sink bluez_sink.XX_XX_XX_XX_XX_XX
 # real
 pactl set-default-sink bluez_sink.04_C8_70_21_10_20.a2dp_sink
+# or set in pulse defalt.pa
+vi ~/.config/pulse/default.pa
 
 
 # Test audio
