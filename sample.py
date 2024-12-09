@@ -140,6 +140,14 @@ async def buttonLongPressed():
     from subprocess import call
     call("sudo shutdown -h now", shell=True)
 
+
+def validate_mac(mac):
+    """Validates if the provided string is a valid MAC address."""
+    mac_regex = r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'
+    if re.match(mac_regex, mac):
+        return True
+    return False
+
 async def main(args):
     global rpiButtonsLeds
     global volume
@@ -292,10 +300,3 @@ if __name__ == '__main__':
         # No loop is running, so we can safely run it
         asyncio.run(main(docopt(usage)))
 
-
-def validate_mac(mac):
-    """Validates if the provided string is a valid MAC address."""
-    mac_regex = r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'
-    if re.match(mac_regex, mac):
-        return True
-    return False
