@@ -183,6 +183,11 @@ async def main(args):
         print("\tENR:%s" % binascii.hexlify(ws.ENR))
     except IOError:
         print("No device found on path %r" % device)
+        while True:
+            if rpiButtonsLeds: rpiButtonsLeds.ledOff()
+            await asyncio.sleep(1)
+            if rpiButtonsLeds: rpiButtonsLeds.ledOn()
+            await asyncio.sleep(1)
         return 2
 
     def List(unused_args):

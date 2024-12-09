@@ -111,6 +111,15 @@ sudo systemctl stop wyzesensepy.service
 sudo systemctl disable wyzesensepy.service
 
 
+sudo cp wyzesensepy.user.service /lib/systemd/user/wyzesensepy.service
+systemctl --user enable wyzesensepy.service
+systemctl --user start wyzesensepy.service
+systemctl --user status wyzesensepy.service
+systemctl --user stop wyzesensepy.service
+systemctl --user disable wyzesensepy.service
+sudo chmod 666 /dev/hidraw0
+
+
 
 # DIDNT WORK
 # Bluetooth speaker for system / service - https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/SystemWide/
