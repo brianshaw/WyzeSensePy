@@ -62,6 +62,8 @@ pactl list sinks
 pactl set-default-sink <sink_name>
 # Example:
 pactl set-default-sink bluez_sink.XX_XX_XX_XX_XX_XX
+# real
+pactl set-default-sink bluez_sink.04_C8_70_21_10_20.a2dp_sink
 
 
 # Test audio
