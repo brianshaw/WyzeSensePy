@@ -15,7 +15,7 @@
     --volume=<volume>  Volume of sound [default: 50]
     --soundclips=<soundclips>  Sound clips toplay [default: 3] 
     --soundtime=<soundtime>  Time between sound clips [default: 5]
-    --speakerid=<speakerid>  Speaker ID [default: 'none']
+    --speakerid=<speakerid>  Speaker ID MAC address (format: XX:XX:XX:XX:XX:XX)
 
 **Examples:** ::
 
@@ -149,7 +149,7 @@ async def main(args):
         logging.getLogger().setLevel(loglevel)
 
     speakerid = args['--speakerid']
-    if speakerid is not 'none':
+    if validate_mac(speakerid):
         Sound.connectToSpeaker(speakerid)
 
     device = args['--device']
@@ -291,3 +291,11 @@ if __name__ == '__main__':
     except RuntimeError:
         # No loop is running, so we can safely run it
         asyncio.run(main(docopt(usage)))
+
+
+def validate_mac(mac):
+    """Validates if the provided string is a valid MAC address."""
+    mac_regex = r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'
+    if re.match(mac_regex, mac):
+        return True
+    return False
