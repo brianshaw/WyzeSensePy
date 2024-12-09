@@ -7,7 +7,7 @@ Wants=bluetooth.service
 Type=simple
 ExecStartPre=/bin/sh -c 'until systemctl is-active bluetooth.service; do sleep 1; done'
 ExecStartPre=/bin/bash -c 'until bluetoothctl show | grep -q "Powered: yes"; do sleep 1; done'
-ExecStart=sudo /home/pi/WyzeSensePy/venv/bin/python3 /home/pi/WyzeSensePy/sample.py --service -r --soundclips 4 --soundtime 7 --volume 80 --speakerid=04:C8:70:21:10:20
+ExecStart=/home/pi/WyzeSensePy/venv/bin/python3 /home/pi/WyzeSensePy/sample.py --service -r --soundclips 4 --soundtime 7 --volume 80 --speakerid=04:C8:70:21:10:20
 StandardOutput=null
 WorkingDirectory=/home/pi/WyzeSensePy/
 
