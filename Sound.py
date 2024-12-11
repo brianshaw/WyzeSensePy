@@ -24,12 +24,16 @@ sounds = {str(index): file.replace("'", "\\'").replace(" ", "\\ ") for index, fi
 # print(f'sounds {sounds}')
 # Remove 'silence.mp3' from the sounds dictionary if it exists
 sounds = {key: value for key, value in sounds.items() if value != 'silence.mp3'}
+sounds = {key: value for key, value in sounds.items() if value != 'bgtone.mp3'}
 
 def play_random_sound(app='afplay'):
   key = random.choice(list(sounds.keys()))
   asyncio.run(playsoundfromkey(key, app=app))
 
 async def play_random_sounds(number_of_sounds=3, sleep_time=3, app='afplay', finishedCallback=None):
+  command = f'{app} -l 0 {soundpath}bgtone.mp3'
+  bg = subprocess.Popen(command, stdout=subprocess.PIPE, 
+                           shell=True, preexec_fn=os.setsid) 
   played_keys = set()
   for _ in range(number_of_sounds):
     available_keys = list(set(sounds.keys()) - played_keys)
@@ -41,6 +45,7 @@ async def play_random_sounds(number_of_sounds=3, sleep_time=3, app='afplay', fin
     time.sleep(sleep_time)
   if finishedCallback:
     finishedCallback()
+  bg.kill()
 
 
 def playbackgroundsound(key, app='afplay', vol=50):
