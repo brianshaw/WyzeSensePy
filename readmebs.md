@@ -11,7 +11,6 @@ source venv/bin/activate
 pip install docopt
 pip install pigpio
 pip install RPi.GPIO
-pip install playsound
 
 
 # setup usb device access for sensor

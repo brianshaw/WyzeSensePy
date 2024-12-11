@@ -5,7 +5,6 @@ import subprocess
 import threading
 import random
 import time
-from playsound import playsound
 
 # The os.setsid() is passed in the argument preexec_fn so
 # it's run after the fork() and before  exec() to run the shell.
@@ -113,16 +112,12 @@ async def playsoundfromkey(key, app='afplay'):
       command = f'{app} {soundpath}{sounds[key]}'
     print(f'command {command}')
     # Create an asynchronous subprocess
-    # process = await asyncio.create_subprocess_shell(command)
+    process = await asyncio.create_subprocess_shell(command)
     
-    # await asyncio.sleep(0.1)
-    # # Wait for the process to finish
-    # await process.wait()
+    await asyncio.sleep(0.1)
+    # Wait for the process to finish
+    await process.wait()
 
-    await play_sound_async(f'{soundpath}{sounds[key]}')
-
-async def play_sound_async(path):
-    await asyncio.to_thread(playsound, path)
 
 # Test function to play multiple sounds asynchronously
 async def test(app='afplay'):
