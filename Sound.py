@@ -113,10 +113,12 @@ async def playsound(key, app='afplay'):
       command = f'{app} {soundpath}{sounds[key]}'
     print(f'command {command}')
     # Create an asynchronous subprocess
-    process = await asyncio.create_subprocess_shell(command)
+    # process = await asyncio.create_subprocess_shell(command)
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, 
+                       shell=True, preexec_fn=os.setsid)
     await asyncio.sleep(0.1)
     # Wait for the process to finish
-    await process.wait()
+    # await process.wait()
 
 # Test function to play multiple sounds asynchronously
 async def test(app='afplay'):
