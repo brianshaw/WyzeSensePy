@@ -45,7 +45,7 @@ async def play_random_sounds(number_of_sounds=3, sleep_time=3, app='afplay', fin
     time.sleep(sleep_time)
   if finishedCallback:
     finishedCallback()
-  bg.kill()
+  killbackgroundsound(bg)
 
 
 def playbackgroundsound(key, app='afplay', vol=50):
