@@ -108,7 +108,7 @@ async def playsound(key, app='afplay'):
       killbackgroundsound(process=proRain)
     # Build the command
     if includeSilenceStart:
-      command = f'{app} silence.mp3 {soundpath}{sounds[key]}'
+      command = f'{app} {soundpath}silence.mp3 {soundpath}{sounds[key]}'
     else:
       command = f'{app} {soundpath}{sounds[key]}'
     print(f'command {command}')
