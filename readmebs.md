@@ -141,6 +141,9 @@ systemctl --user status wyzesensepy.service
 systemctl --user stop wyzesensepy.service
 systemctl --user disable wyzesensepy.service
 
+# edit
+sudo vi /lib/systemd/user/wyzesensepy.service
+
 # to clean up
 sudo rm /lib/systemd/user/wyzesensepy.service
 
