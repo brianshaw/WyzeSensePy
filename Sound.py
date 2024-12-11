@@ -14,6 +14,7 @@ pro = None
 proRain = None
 proAmbient = None
 runningsounds = False
+includeSilenceStart = True
 
 # Define the directory path
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -22,6 +23,8 @@ print(f'soundpath {soundpath}')
 # Dictionary of sounds
 sounds = {str(index): file.replace("'", "\\'").replace(" ", "\\ ") for index, file in enumerate(os.listdir(soundpath)) if file.endswith('.mp3')}
 # print(f'sounds {sounds}')
+# Remove 'silence.mp3' from the sounds dictionary if it exists
+sounds = {key: value for key, value in sounds.items() if value != 'silence.mp3'}
 
 def play_random_sound(app='afplay'):
   key = random.choice(list(sounds.keys()))
@@ -99,11 +102,15 @@ def killall():
     
 # Asynchronous function to play sound
 async def playsound(key, app='afplay'):
+    global includeSilenceStart
     if proRain is not None and key == '5':
-        print('kill rain')
-        killbackgroundsound(process=proRain)
+      print('kill rain')
+      killbackgroundsound(process=proRain)
     # Build the command
-    command = f'{app} {soundpath}{sounds[key]}'
+    if includeSilenceStart:
+      command = f'{app} silence.mp3 {soundpath}{sounds[key]}'
+    else:
+      command = f'{app} {soundpath}{sounds[key]}'
     print(f'command {command}')
     # Create an asynchronous subprocess
     process = await asyncio.create_subprocess_shell(command)
