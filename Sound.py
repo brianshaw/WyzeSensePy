@@ -14,7 +14,7 @@ pro = None
 proRain = None
 proAmbient = None
 runningsounds = False
-includeSilenceStart = True
+includeSilenceStart = False
 
 # Define the directory path
 dir_path = os.path.dirname(os.path.realpath(__file__))
