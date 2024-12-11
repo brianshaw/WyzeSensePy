@@ -1,5 +1,5 @@
 sudo apt update
-sudo apt -y install python3-pip python3-virtualenv pigpio python3-pigpio git vim ffmpeg mpg321
+sudo apt -y install python3-pip python3-virtualenv pigpio python3-pigpio git vim ffmpeg mpg321 gnustep-gui-runtime
 sudo systemctl enable pigpiod 
 
 git clone https://github.com/brianshaw/WyzeSensePy

@@ -138,6 +138,7 @@ async def buttonLongPressed():
     logging.debug('Button long press callback called')
     if rpiButtonsLeds: rpiButtonsLeds.ledOn()
     from subprocess import call
+    call("say 'Shutting down'", shell=True)
     call("sudo shutdown -h now", shell=True)
 
 
