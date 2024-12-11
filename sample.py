@@ -56,8 +56,7 @@ def playSounds(start_event, stop_event, exit_event):
         # print('playSounds loop')
         if start_event.wait(1) and start_event.is_set() and not stop_event.is_set():
             # asyncio.run(Sound.play_random_sounds(soundclips, soundtime, f'mpg321 -g {volume}', resetSoundAndLed))
-            # asyncio.run(Sound.play_random_sounds(soundclips, soundtime, f'mpg321 -g {volume} -o alsa', resetSoundAndLed))
-            asyncio.run(Sound.play_random_sounds(soundclips, soundtime, f'mpg321 -g {volume} -o alsa -b 1', resetSoundAndLed))
+            asyncio.run(Sound.play_random_sounds(soundclips, soundtime, f'mpg321 -g {volume} -o alsa', resetSoundAndLed))
         # if stop_event.is_set():
         #     playing = False
         # if start_event.is_set():
