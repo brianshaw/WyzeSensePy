@@ -31,7 +31,7 @@ def play_random_sound(app='afplay'):
   asyncio.run(playsoundfromkey(key, app=app))
 
 async def play_random_sounds(number_of_sounds=3, sleep_time=3, app='afplay', finishedCallback=None):
-  command = f'{app} -l 0 {soundpath}bgtone.mp3'
+  command = f'{app} -l 0 -q {soundpath}bgtone.mp3'
   bg = subprocess.Popen(command, stdout=subprocess.PIPE, 
                            shell=True, preexec_fn=os.setsid) 
   played_keys = set()
