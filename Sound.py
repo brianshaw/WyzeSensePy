@@ -5,7 +5,7 @@ import subprocess
 import threading
 import random
 import time
-
+from playsound import playsound
 
 # The os.setsid() is passed in the argument preexec_fn so
 # it's run after the fork() and before  exec() to run the shell.
@@ -28,7 +28,7 @@ sounds = {key: value for key, value in sounds.items() if value != 'silence.mp3'}
 
 def play_random_sound(app='afplay'):
   key = random.choice(list(sounds.keys()))
-  asyncio.run(playsound(key, app=app))
+  asyncio.run(playsoundfromkey(key, app=app))
 
 async def play_random_sounds(number_of_sounds=3, sleep_time=3, app='afplay', finishedCallback=None):
   played_keys = set()
@@ -38,7 +38,7 @@ async def play_random_sounds(number_of_sounds=3, sleep_time=3, app='afplay', fin
       break
     key = random.choice(available_keys)
     played_keys.add(key)
-    await playsound(key, app=app)
+    await playsoundfromkey(key, app=app)
     time.sleep(sleep_time)
   if finishedCallback:
     finishedCallback()
@@ -101,7 +101,7 @@ def killall():
         killRain()
     
 # Asynchronous function to play sound
-async def playsound(key, app='afplay'):
+async def playsoundfromkey(key, app='afplay'):
     global includeSilenceStart
     if proRain is not None and key == '5':
       print('kill rain')
@@ -113,21 +113,26 @@ async def playsound(key, app='afplay'):
       command = f'{app} {soundpath}{sounds[key]}'
     print(f'command {command}')
     # Create an asynchronous subprocess
-    process = await asyncio.create_subprocess_shell(command)
+    # process = await asyncio.create_subprocess_shell(command)
     
-    await asyncio.sleep(0.1)
-    # Wait for the process to finish
-    await process.wait()
+    # await asyncio.sleep(0.1)
+    # # Wait for the process to finish
+    # await process.wait()
+
+    await play_sound_async(f'{soundpath}{sounds[key]}')
+
+async def play_sound_async(path):
+    await asyncio.to_thread(playsound, path)
 
 # Test function to play multiple sounds asynchronously
 async def test(app='afplay'):
     # Run all play sound tasks concurrently
     await asyncio.gather(
-        playsound('0', app=app),
-        playsound('1', app=app),
-        playsound('2', app=app),
-        playsound('3', app=app),
-        playsound('4', app=app),
+        playsoundfromkey('0', app=app),
+        playsoundfromkey('1', app=app),
+        playsoundfromkey('2', app=app),
+        playsoundfromkey('3', app=app),
+        playsoundfromkey('4', app=app),
     )
 
 def connectToSpeaker(speakerid):
