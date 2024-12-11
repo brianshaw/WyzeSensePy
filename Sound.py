@@ -114,6 +114,7 @@ async def playsound(key, app='afplay'):
     print(f'command {command}')
     # Create an asynchronous subprocess
     process = await asyncio.create_subprocess_shell(command)
+    await asyncio.sleep(0.1)
     # Wait for the process to finish
     await process.wait()
 
