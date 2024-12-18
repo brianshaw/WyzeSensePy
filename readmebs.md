@@ -129,6 +129,7 @@ sudo systemctl disable wyzesensepy.service
 
 
 # This is what worked
+
 # I did this but didn't use a custom user. just used pi
 # https://medium.com/twodigits/using-your-raspberrypi-as-a-bluetooth-speaker-9c59366c059e
 sudo vi /etc/bluetooth/main.conf
