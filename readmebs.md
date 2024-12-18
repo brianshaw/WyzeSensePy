@@ -90,6 +90,8 @@ mpg321 /home/pi/WyzeSense/sounds/HEY\ -\ AUDIO\ FROM\ JAYUZUMI.COM.mp3
 
 sudo chmod +x sample.py
 
+
+# This DIDN'T work ... something about running as "system"
 sudo cp wyzesensepy.service /lib/systemd/system/wyzesensepy.service
 # OR
 sudo vi /lib/systemd/system/wyzesensepy.service
@@ -126,6 +128,7 @@ sudo systemctl stop wyzesensepy.service
 sudo systemctl disable wyzesensepy.service
 
 
+# This is what worked
 # I did this but didn't use a custom user. just used pi
 # https://medium.com/twodigits/using-your-raspberrypi-as-a-bluetooth-speaker-9c59366c059e
 sudo vi /etc/bluetooth/main.conf
